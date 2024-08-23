@@ -22,7 +22,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id;
 
-
     /**
      * @var list<string> The user roles
      */
@@ -34,8 +33,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank]
-
+    #[Assert\PasswordStrength([
+        'minScore' => 2, //PasswordStrength::STRENGTH_MEDIUM , ne trouve pas cette constante
+        'message' => 'Password must be stronger',
+    ])]
     private ?string $password = null;
+
+    #[ORM\OneToOne(mappedBy: 'userId', cascade: ['persist', 'remove'])]
+    private ?Employe $employe = null;
 
     public function getId(): ?Uuid
     {
@@ -105,5 +110,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getEmploye(): ?Employe
+    {
+        return $this->employe;
+    }
+
+    public function setEmploye(Employe $employe): static
+    {
+        // set the owning side of the relation if necessary
+        if ($employe->getUserId() !== $this) {
+            $employe->setUserId($this);
+        }
+
+        $this->employe = $employe;
+
+        return $this;
     }
 }

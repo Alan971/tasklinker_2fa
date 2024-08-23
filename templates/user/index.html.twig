@@ -1,20 +1,23 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Hello UserController!{% endblock %}
+{% block title %}Sign in TaskLinker{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<h1> TaskLinker</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="">
+<h2 class="">S'inscrire</h2>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/alan/apps/test-apps/Projet10/tasklinker/src/Controller/UserController.php</code></li>
-        <li>Your template at <code>/home/alan/apps/test-apps/Projet10/tasklinker/templates/user/index.html.twig</code></li>
-    </ul>
+{{ form_start(form1) }}
+{{ form_start(form2) }}
+{{ form_row(form1.nom) }}
+{{ form_row(form1.prenom) }}
+{{ form_row(form1.email) }}
+{{ form_row(form2.password) }}
+{{ form_row(form2.password_confirm) }}
+{{ form_row(form2.dateArrivee) }}
+<button class="button button-submit">Continuer</button>
+{{ form_end(form1) }}
+{{ form_end(form2) }}
+
+<a href="{{ path('app_login') }}">Vous avez déjà un compte?</a>
 </div>
 {% endblock %}

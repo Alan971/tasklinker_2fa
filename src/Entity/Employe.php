@@ -41,6 +41,10 @@ class Employe
     #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'employes')]
     private Collection $projets;
 
+    #[ORM\OneToOne(inversedBy: 'employe', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $userId = null;
+
     public function __construct()
     {
         $this->projets = new ArrayCollection();
@@ -134,6 +138,18 @@ class Employe
         if ($this->projets->removeElement($projet)) {
             $projet->removeEmploye($this);
         }
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(User $userId): static
+    {
+        $this->userId = $userId;
 
         return $this;
     }
