@@ -28,6 +28,25 @@ nav {
     padding: 50px 15px;
 }
 
+#logo-login {
+    display: block;
+    text-align: left;
+    text-decoration-color: #FFFFFF;
+    font-size: 24px;
+}
+.title-login {
+    font-size: 24px;
+    color: #FFFFFF;
+    margin-bottom: 30px;
+}
+.login {
+    width: 500px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background: url('/img/bg-menu.svg') center bottom no-repeat #1C5B50;
+    padding: 50px 15px;
+}
+
 main {
     flex: 1;
 }

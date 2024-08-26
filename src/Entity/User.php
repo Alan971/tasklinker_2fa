@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,6 +13,7 @@ use Symfony\bridge\Doctrine\Types\UuidType;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_ID', fields: ['id'])]
+#[UniqueEntity(fields: ['id'], message: 'There is already an account with this id')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     // modification pour que l'id ne soit pas incrémenté mais aléatoire
@@ -33,6 +35,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank]
+    #[Assert\NotCompromisedPassword()]
+    #[Assert\Regex('/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{8,32}$/')]
     #[Assert\PasswordStrength([
         'minScore' => 2, //PasswordStrength::STRENGTH_MEDIUM , ne trouve pas cette constante
         'message' => 'Password must be stronger',
