@@ -11,6 +11,7 @@ use App\Repository\StatutRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Projet;
 use App\Form\ProjetType;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProjetController extends AbstractController
 {
@@ -23,6 +24,7 @@ class ProjetController extends AbstractController
 
     }
 
+    #[isGranted('IS_ATHENTICATED')]
     #[Route('/', name: 'app_projets')]
     public function projets(): Response
     {
@@ -34,7 +36,7 @@ class ProjetController extends AbstractController
             'projets' => $projets,
         ]);
     }
-
+    #[isGranted('IS_ATHENTICATED')]
     #[Route('/projets/ajouter', name: 'app_projet_add')]
     public function ajouterProjet(Request $request): Response
     {  
@@ -55,7 +57,7 @@ class ProjetController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
+    #[isGranted('IS_ATHENTICATED')]
     #[Route('/projets/{id}', name: 'app_projet')]
     public function projet(int $id): Response
     {  
@@ -71,7 +73,7 @@ class ProjetController extends AbstractController
             'statuts' => $statuts,
         ]);
     }
-
+    #[isGranted('IS_ATHENTICATED')]
     #[Route('/projets/{id}/archiver', name: 'app_projet_archive')]
     public function archiverProjet(int $id): Response
     {  
@@ -87,7 +89,7 @@ class ProjetController extends AbstractController
         return $this->redirectToRoute('app_projets');
     }
 
-
+    #[isGranted('IS_ATHENTICATED')]
     #[Route('/projets/{id}/editer', name: 'app_projet_edit')]
     public function editerProjet(int $id, Request $request): Response
     {  
