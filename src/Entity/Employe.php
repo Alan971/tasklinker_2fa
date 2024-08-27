@@ -35,7 +35,6 @@ class Employe
     private ?string $statut = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    #[Assert\NotBlank]
     private ?\DateTimeInterface $dateArrivee = null;
 
     #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'employes')]
@@ -110,7 +109,12 @@ class Employe
 
     public function setDateArrivee(?\DateTimeInterface $dateArrivee): static
     {
-        $this->dateArrivee = $dateArrivee;
+        if ($dateArrivee instanceof \DateTime) {
+            $this->dateArrivee = $dateArrivee;
+        } 
+        else {
+            $this->dateArrivee = new \DateTime('now');
+        }
 
         return $this;
     }

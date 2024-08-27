@@ -6,12 +6,15 @@ use App\Entity\User;
 use App\Entity\Employe;
 use App\Form\RegistrationFormType;
 use App\Form\UserType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+
+use function PHPUnit\Framework\isEmpty;
 
 class RegistrationController extends AbstractController
 {
@@ -20,34 +23,37 @@ class RegistrationController extends AbstractController
     {
         $user = new User();
         $employe = new Employe();
+        $now = new \DateTime('now');
 
-        $form = $this->createForm(RegistrationFormType::class, ['user' => $user, 'employe' => $employe]);
-        $form->handleRequest($request);
+        // create form for employe and user registration
+        $formEmploye = $this->createForm(RegistrationFormType::class, $employe);
+        $formUser = $this->createForm(UserType::class, $user);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $formEmploye->handleRequest($request);
+        $formUser->handleRequest($request);
+
+        if ($formUser->isSubmitted() && $formEmploye->isSubmitted() && $formUser->isValid() && $formEmploye->isValid()) {
             // if passwords are same
-            if ($form->get('plainPassword') === $form->get('password_confirm')) {
+            if ($formUser->get('plainPassword') === $formUser->get('password_confirm')) {
                 // encode the plain password
                 $user->setPassword(
                     $userPasswordHasher->hashPassword(
                         $user,
-                        $form->get('plainPassword')->getData()
+                        $formUser->get('plainPassword')->getData()
                     )
                 );
-
+                $employe->setDateArrivee($now);
                 $entityManager->persist($user);
                 $entityManager->persist($employe);
                 $entityManager->flush();
-
-
-                // do anything else you need here, like send an email
 
                 return $this->redirectToRoute('app_projets');
             }
         }
 
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form,
+            'registrationForm' => $formEmploye,
+            'formUser' => $formUser,
         ]);
     }
 }
