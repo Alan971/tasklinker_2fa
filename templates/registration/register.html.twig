@@ -1,19 +1,35 @@
-{% extends 'base.html.twig' %}
+{% extends 'loginbase.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Register in TaskLinker{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
-
     {{ form_errors(registrationForm) }}
-
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.id) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
+        <h1 class="title-login">
+            S'inscrire
+        </h1>
+        <div class="each-field">
+            {{ form_row(registrationForm.employe.nom) }}        
+        </div>
+        <div class="each-field">
+            {{ form_row(registrationForm.employe.prenom) }}
+        </div>
+        <div class="each-field">
+            {{ form_row(registrationForm.employe.email) }}
+        </div>
+        <div class="each-field">
+            {{ form_row(registrationForm.plainPassword) }}
+        </div>
+        <div class="each-field">
+            {{ form_row(registrationForm.password_confirm) }}
+        </div>
+        <div class="each-field">
+            {{ form_row(registrationForm.employe.dateArrivee) }}
+        </div>
+        <div class="each-field">
+            <button class="button button-submit">Continuer</button>
+        </div>
+        <a href="{{ path('app_login') }}">Vous avez déjà un compte?</a>
     {{ form_end(registrationForm) }}
 {% endblock %}
+

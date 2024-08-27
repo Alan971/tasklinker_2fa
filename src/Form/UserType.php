@@ -27,7 +27,10 @@ class UserType extends AbstractType
                 ])
             )
             ->add('password', PasswordType::class, ['label' => 'Mot de passe'])
-            ->add('password_confirm', PasswordType::class, ['label' => 'Confirmez le mot de passe'])
+            ->add('password_confirm', PasswordType::class, [
+                'label' => 'Confirmez le mot de passe',
+                'mapped' => false
+                ])
             ->add('roles', HiddenType::class, [
                 'data' => 'ROLE_USER'])
         ;
