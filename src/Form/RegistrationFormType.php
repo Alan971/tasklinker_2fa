@@ -20,8 +20,9 @@ class RegistrationFormType extends AbstractType
             ->add('nom', TextType::class, ['label' => 'Nom'])
             ->add('prenom', TextType::class, ['label' => 'Prénom'])
             ->add('email', EmailType::class, ['label' => 'E-mail'])
-            ->add('statut', HiddenType::class, ['data' => 'A confirmer'])
+            ->add('statut', HiddenType::class, ['data' => 'CDI'])
             // ->remove('dateArrivee')
+
         ;
     }
 

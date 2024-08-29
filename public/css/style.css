@@ -38,40 +38,73 @@ nav {
     background: url('/img/bg-login.jpg') center bottom no-repeat #1C5B50;
     background-size: cover ;
 }
+#who-is-connected {
+    width: 200px;
+    height: 20px;
+    color: #FFFFFF;
+}
+
 #login-title{
     width: 20%;
     height: 100%;
 }
 #login-content{
-    width: 35%;
+    width: 45%;
     padding-top: 30px;
     padding-bottom: 30px;
+    margin-bottom: 50px;
     margin-top : 50px;
     margin-left: 100px;
     display: flex;
+    flex-direction: column;
     text-align: center;
     justify-content: center;
+    align-items: center;
     text-decoration-color: #FFFFFF;
     font-size: 16px;
     background-color: #4D8077;
     border-radius: 3%;
 }
 .title-login {
-    font-size: 24px;
+    font-size: 34px;
     color: #FFFFFF;
+    margin-bottom: 15px;
+}
+.titre-deux {
+    font-size: 22px;
+    color: #FFFFFF;
+    font-weight: 300;
     margin-bottom: 30px;
 }
+.block-p{
+    display: flex;
+    flex-direction: row;
+}
+.block-p .p-ou {
+    margin-top: 10px;
+}
+.field-dispatch {
+    width: 150px;
+}
+.field-dispatch:hover {  
+   background-color: #1C5B50;
+}
 .each-field {
+    width: 100%;
     align-items: flex-start;
     text-align: left;
 }
-.each-field label {
+.field-dispatch {
+    justify-content: center;
+    align-items: center;
+}
+.each-field label, p {
     color: #FFFFFF;
-    font-size: 14px;
+    font-size: 16px;
 }
 .each-field input button{
     width: 70%;
-    height: 15px;
+    height: 10px;
     border: none;
 }
 .each-field input:focus {
@@ -145,10 +178,15 @@ header {
     background: #4D8077;
     height: 155px;
     padding: 30px 80px 10px 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-div#current-user {
-    height: 55px;
+#current-user a{
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: large;
 }
 
 div#title-page h1 {

@@ -24,7 +24,7 @@ class ProjetController extends AbstractController
 
     }
 
-    #[isGranted('IS_ATHENTICATED')]
+    // #[isGranted('IS_ATHENTICATED')]
     #[Route('/', name: 'app_projets')]
     public function projets(): Response
     {
@@ -57,7 +57,7 @@ class ProjetController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-    #[isGranted('IS_ATHENTICATED')]
+    // #[isGranted('IS_ATHENTICATED')]
     #[Route('/projets/{id}', name: 'app_projet')]
     public function projet(int $id): Response
     {  

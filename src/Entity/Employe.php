@@ -25,9 +25,9 @@ class Employe
     #[Assert\NotBlank]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique:true)]
     #[Assert\NotBlank]
-    #[Assert\Email]
+    #[Assert\Email (message:"Cet email n'est pas valide")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -40,9 +40,8 @@ class Employe
     #[ORM\ManyToMany(targetEntity: Projet::class, mappedBy: 'employes')]
     private Collection $projets;
 
-    #[ORM\OneToOne(inversedBy: 'employe', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId = null;
+    #[ORM\OneToOne(mappedBy: 'employe', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -86,6 +85,7 @@ class Employe
     public function setEmail(?string $email): static
     {
         $this->email = $email;
+        $this->user->setEmail($email);
 
         return $this;
     }
@@ -145,15 +145,19 @@ class Employe
 
         return $this;
     }
-
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(User $userId): static
+    public function setUser(User $user): static
     {
-        $this->userId = $userId;
+        // set the owning side of the relation if necessary
+        if ($user->getEmploye() !== $this) {
+            $user->setEmploye($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

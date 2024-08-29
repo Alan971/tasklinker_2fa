@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,8 +11,7 @@ use Symfony\Component\Uid\Uuid;
 use Symfony\bridge\Doctrine\Types\UuidType;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_ID', fields: ['id'])]
-#[UniqueEntity(fields: ['id'], message: 'There is already an account with this id')]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     // modification pour que l'id ne soit pas incrémenté mais aléatoire
@@ -23,6 +21,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id;
+
+    #[ORM\Column(length: 180)]
+    private ?string $email = null;
 
     /**
      * @var list<string> The user roles
@@ -43,7 +44,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     ])]
     private ?string $password = null;
 
-    #[ORM\OneToOne(mappedBy: 'userId', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Employe $employe = null;
 
     public function getId(): ?Uuid
@@ -51,9 +53,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function setId(Uuid $id): static
+    public function getEmail(): ?string
     {
-        $this->id = $id;
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+        $this->employe->setEmail($email);
 
         return $this;
     }
@@ -65,7 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->id;
+        return (string) $this->email;
     }
 
     /**
@@ -123,11 +131,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setEmploye(Employe $employe): static
     {
-        // set the owning side of the relation if necessary
-        if ($employe->getUserId() !== $this) {
-            $employe->setUserId($this);
-        }
-
         $this->employe = $employe;
 
         return $this;

@@ -1,0 +1,20 @@
+{% extends 'loginbase.html.twig' %}
+
+{% block title %}Welcome to TaskLinker{% endblock %}
+
+{% block body %}
+    <h1 class="title-login">
+        Bienvenue sur Tasklinker
+    </h1>
+    <h2 class = "titre-deux">
+        Commencez dès maintenant - gratuitement
+    </h2>
+            <p>Vous avez déjà un compte ?</p>
+            <a class = "button button-submit field-dispatch" href="{{ path('app_login') }}">Se Connecter</a>
+            <div class="block-p">
+                <p class="p-ou">___________&nbsp;</p>
+                <p>&nbsp;&nbsp; ou &nbsp;&nbsp;</p>
+                <p class="p-ou">&nbsp;&nbsp;___________</p>
+            </div>
+            <a class = "button button-submit field-dispatch" href="{{ path('app_register') }}">S'inscrire</a>
+{% endblock %}
