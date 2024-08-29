@@ -3,32 +3,30 @@
 {% block title %}Register in TaskLinker{% endblock %}
 
 {% block body %}
-    {{ form_start(registrationForm) }}
     {{ form_start(formUser) }}
         <h1 class="title-login">
             S'inscrire
         </h1>
         <div class="each-field">
-            {{ form_row(registrationForm.nom) }}        
+            {{ form_row(formUser.employe.nom) }}        
         </div>
         <div class="each-field">
-            {{ form_row(registrationForm.prenom) }}
+            {{ form_row(formUser.employe.prenom) }}
         </div>
         <div class="each-field">
-            {{ form_row(registrationForm.email) }}
+            {{ form_row(formUser.employe.email) }}
         </div>
         <div class="each-field">
             {{ form_row(formUser.password) }}
         </div>
         <div class="each-field error">
-            {{ form_errors(registrationForm) }}
             {{ form_errors(formUser) }}
         </div>
         <div class="each-field">
             <button class="button button-submit">Continuer</button>
         </div>
         <a href="{{ path('app_login') }}">Vous avez déjà un compte?</a>
-    {{ form_end(registrationForm) }}
+
     {{ form_end(formUser) }}
 {% endblock %}
 

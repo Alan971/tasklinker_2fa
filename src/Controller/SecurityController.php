@@ -34,11 +34,8 @@ class SecurityController extends AbstractController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): Response
     {
-        return $this->redirectToRoute('app_dispatch');
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-
-
 
 
     // Fonction de travail : sert a modifier la base de donnée user
@@ -47,7 +44,8 @@ class SecurityController extends AbstractController
     {
         $users = $em->getRepository(User::class)->findAll();
         foreach ($users as $user) {
-            $user->setRoles(array('ROLE_USER'));
+            // $user->setRoles(array('ROLE_USER'));
+             $user->setRoles(array('ROLE_ADMIN'));
             // $user->setPassword($userPasswordHasher->hashPassword(
             //     $user,
             //     'test'

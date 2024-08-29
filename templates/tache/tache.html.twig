@@ -19,7 +19,9 @@
 {{ form_row(form.employe) }}
 <br>
 <button class="button button-submit">Modifier</button>
+{%if is_granted('ROLE_ADMIN') %}
 <a href="{{ path('app_tache_delete', {id: tache.id}) }}" class="delete-task">Supprimer la tâche</a>
+{% endif %}
 {{ form_end(form) }}
 
 {% endblock %}

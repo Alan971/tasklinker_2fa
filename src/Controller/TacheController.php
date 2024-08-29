@@ -12,6 +12,7 @@ use App\Repository\TacheRepository;
 use App\Form\TacheType;
 use App\Entity\Tache;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TacheController extends AbstractController
 {
@@ -24,7 +25,7 @@ class TacheController extends AbstractController
     {
 
     }
-
+    #[isGranted('ROLE_USER')]
     #[Route('/projets/{id}/taches/ajouter', name: 'app_tache_add')]
     public function ajouterTache(int $id, Request $request): Response
     {  
@@ -50,7 +51,7 @@ class TacheController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
+    #[isGranted('ROLE_ADMIN')]
     #[Route('/taches/{id}/supprimer', name: 'app_tache_delete')]
     public function supprimerTache(int $id): Response
     {  
@@ -67,6 +68,7 @@ class TacheController extends AbstractController
     }
 
 
+    #[isGranted('ROLE_USER')]
     #[Route('/taches/{id}', name: 'app_tache')]
     public function tache(int $id, Request $request): Response
     {  

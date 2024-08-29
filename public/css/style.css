@@ -437,6 +437,7 @@ table#team-container tbody tr:nth-child(2n + 1) td {
 table#team-container tr td {
     border-bottom: 1px solid #D9D9D9;
     padding: 15px 20px;
+    height: 99px;
 }
 
 .employee-infos {

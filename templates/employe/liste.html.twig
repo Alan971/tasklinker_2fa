@@ -13,7 +13,9 @@
         <tr>
             <th>Prénom, Nom</th>
             <th>Statut</th>
+            {% if is_granted('ROLE_ADMIN') %}
             <th>Actions</th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -30,7 +32,12 @@
                         </div>
                     </div>
                 </td>
-                <td>{{ employe.statut }}</td>
+                <td>
+                    <div class="employee-infos">
+                    {{ employe.statut }}
+                    </div>
+                </td>
+                {% if is_granted('ROLE_ADMIN') %}
                 <td>
                     <a class="button button-edit-team" href="{{ path('app_employe_edit', {id: employe.id}) }}">
                         Éditer
@@ -39,6 +46,7 @@
                         Supprimer
                     </a>
                 </td>
+                {% endif %}
             </tr>
         {% endfor %}
     </tbody>

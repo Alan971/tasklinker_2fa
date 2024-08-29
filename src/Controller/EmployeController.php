@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\EmployeRepository;
 use App\Form\EmployeType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class EmployeController extends AbstractController
 {
@@ -19,7 +20,7 @@ class EmployeController extends AbstractController
     {
 
     }
-
+    #[isGranted('ROLE_USER')]
     #[Route('/employes', name: 'app_employes')]
     public function employes(): Response
     {
@@ -29,7 +30,7 @@ class EmployeController extends AbstractController
             'employes' => $employes,
         ]);
     }
-
+    #[isGranted('ROLE_ADMIN')]
     #[Route('/employes/{id}', name: 'app_employe')]
     public function employe($id): Response
     {
@@ -43,7 +44,7 @@ class EmployeController extends AbstractController
             'employe' => $employe,
         ]);
     }
-
+    #[isGranted('ROLE_ADMIN')]
     #[Route('/employes/{id}/supprimer', name: 'app_employe_delete')]
     public function supprimerEmploye($id): Response
     {
@@ -58,7 +59,7 @@ class EmployeController extends AbstractController
         
         return $this->redirectToRoute('app_employes');
     }
-
+    #[isGranted('ROLE_ADMIN')]
     #[Route('/employes/{id}/editer', name: 'app_employe_edit')]
     public function editerEmploye($id, Request $request): Response
     {
