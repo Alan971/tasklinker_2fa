@@ -85,7 +85,6 @@ class Employe
     public function setEmail(?string $email): static
     {
         $this->email = $email;
-        $this->user->setEmail($email);
 
         return $this;
     }

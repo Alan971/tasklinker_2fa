@@ -29,38 +29,38 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $employe = new Employe();
         $now = new \DateTime('now');
 
-        // create form for employe and user registration
-        $formEmploye = $this->createForm(RegistrationFormType::class, $employe);
         $formUser = $this->createForm(UserType::class, $user);
-
-        $formEmploye->handleRequest($request);
         $formUser->handleRequest($request);
 
-        if ($formUser->isSubmitted() && $formEmploye->isSubmitted() && $formUser->isValid() && $formEmploye->isValid()) {
-            // if passwords are same
-            if ($formUser->get('plainPassword') === $formUser->get('password_confirm')) {
-                // encode the plain password
-                $user->setPassword(
-                    $userPasswordHasher->hashPassword(
-                        $user,
-                        $formUser->get('plainPassword')->getData()
-                    )
-                );
-                $employe->setDateArrivee($now);
-                $entityManager->persist($user);
-                $entityManager->persist($employe);
-                $entityManager->flush();
+        if ($formUser->isSubmitted() && $formUser->isValid()) {
 
-                return $this->redirectToRoute('app_projets');
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $formUser->get('password')->getData()
+                )
+            );
+            $user->setEmploye($formUser->getData()->get('EmployeShortType'));
+            //enregistrement des données non demandées :
+            // $employe = new Employe();
+            // //$employe->setNom($formUser->getData()->get('nom'));
+            // // $employe->setNom($formUser->getData()['nom']);
+            // $employe->setPrenom($formUser->get('nom')->getData());
+            // $employe->setPrenom($formUser->get('prenom')->getData());
+            // $employe->setEmail($formUser->get('email')->getData());
+            // $employe->setDateArrivee($now);
+            // $employe->setStatut('CDI');
+            $entityManager->persist($user);
+            // $entityManager->persist($employe);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_projets');
             }
-        }
-
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $formEmploye,
             'formUser' => $formUser,
         ]);
     }
 }
+//Pasdemot6compliqué!
