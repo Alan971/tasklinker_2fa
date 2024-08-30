@@ -25,6 +25,7 @@ class UserType extends AbstractType
                 'first_options'  => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmez le mot de passe'],
             ])
+            ->add('email', EmailType::class)
             ->add('employe', EmployeShortType::class)
             ->remove('roles')
         ;

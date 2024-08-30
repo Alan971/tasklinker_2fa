@@ -61,8 +61,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-        $this->employe->setEmail($email);
-
         return $this;
     }
 

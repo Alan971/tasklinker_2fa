@@ -42,18 +42,17 @@ class RegistrationController extends AbstractController
                     $formUser->get('password')->getData()
                 )
             );
-            $user->setEmploye($formUser->getData()->get('EmployeShortType'));
-            //enregistrement des données non demandées :
-            // $employe = new Employe();
-            // //$employe->setNom($formUser->getData()->get('nom'));
-            // // $employe->setNom($formUser->getData()['nom']);
-            // $employe->setPrenom($formUser->get('nom')->getData());
-            // $employe->setPrenom($formUser->get('prenom')->getData());
-            // $employe->setEmail($formUser->get('email')->getData());
-            // $employe->setDateArrivee($now);
-            // $employe->setStatut('CDI');
+            // construction de l'objet employe
+            $employe = new Employe();
+            $employe = $formUser->get('employe')->getData();
+            $employe->setEmail($formUser->get('email')->getData());
+            $employe->setDateArrivee($now);
+            $employe->setStatut('CDI');
+            // chargement de l'objet employe dans user
+            // qui va le transmettre via son setter
+            $user->setEmploye($employe);
+
             $entityManager->persist($user);
-            // $entityManager->persist($employe);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_projets');
@@ -63,4 +62,3 @@ class RegistrationController extends AbstractController
         ]);
     }
 }
-//Pasdemot6compliqué!
