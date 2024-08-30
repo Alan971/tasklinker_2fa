@@ -9,6 +9,7 @@
 {% block body %}
 
 <div id="projects-container">
+{{ info }}
     {% for projet in projets %}
         {% set ok = 0 %}
         {% for employe in projet.employes %}

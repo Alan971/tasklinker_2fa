@@ -12,13 +12,21 @@ use App\Repository\ProjetRepository;
 use App\Repository\StatutRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Projet;
+use App\Entity\User;
+use App\Entity\Employe;
 use App\Form\ProjetType;
+use App\Repository\EmployeRepository;
+use SebastianBergmann\CodeCoverage\Report\Xml\Project;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+
+use function PHPUnit\Framework\isEmpty;
 
 class ProjetController extends AbstractController
 {
     public function __construct(
         private ProjetRepository $projetRepository,
+        private EmployeRepository $employeRepository,
         private StatutRepository $statutRepository,
         private EntityManagerInterface $entityManager,
     )
@@ -34,12 +42,22 @@ class ProjetController extends AbstractController
     #[Route('/', name: 'app_projets')]
     public function projets(): Response
     {
-        $projets = $this->projetRepository->findBy([
-            'archive' => false,
-        ]);
+        // controle d'accès aux projets :
+        // si Chef de projet alors acces à tous
+        if($this->isGranted('ROLE_ADMIN')) {
+            $projets = $this->projetRepository->findBy([
+                'archive' => false,
+            ]);
+        }
+        // sinon récupération de l'employé via utilisateur, puis récupération des projets
+        else {
+            $employe = $this->employeRepository->findByEmail($this->getUser()->getUserIdentifier());
+            $projects = $employe->getProjets(); 
+        }
 
         return $this->render('projet/liste.html.twig', [
-            'projets' => $projets,
+            'projets' => $projects,
+            'info' => '',
         ]);
     }
     /*  
@@ -81,7 +99,7 @@ class ProjetController extends AbstractController
         if(!$projet || $projet->isArchive()) {
             return $this->redirectToRoute('app_projets');
         }
-        // contrôle d'accès au projet
+        // contrôle d'accès au projet par la barre de navigation
         $accesControl = new AccessControl();
         if (!$accesControl->controleAccesProjet($projet->getEmployes(), $this->getUser()->getUserIdentifier())) {   
             return $this->redirectToRoute('app_projets');

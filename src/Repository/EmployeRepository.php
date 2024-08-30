@@ -36,13 +36,13 @@ class EmployeRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Employe
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+   public function findByEmail(string $email): ?Employe
+   {
+       return $this->createQueryBuilder('e')
+           ->andWhere('e.email = :email')
+           ->setParameter('email', $email)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
 }

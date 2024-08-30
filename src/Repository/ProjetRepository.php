@@ -24,13 +24,13 @@ class ProjetRepository extends ServiceEntityRepository
 //    /**
 //     * @return Projet[] Returns an array of Projet objects
 //     */
-//    public function findByExampleField($value): array
+//    public function findByEmploye(int $employeId): array
 //    {
 //        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
+//            ->join('p.employes', 'e')
+//            ->andWhere('e.id = :employeId')
+//            ->setParameter('employeId', $employeId)
 //            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
