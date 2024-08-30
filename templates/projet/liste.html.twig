@@ -10,21 +10,26 @@
 
 <div id="projects-container">
     {% for projet in projets %}
+        {% set ok = 0 %}
         {% for employe in projet.employes %}
-            {% if employe.email is same as app.user.employe.email %}
-                <article class="card-project">
-                    <a href="{{ path('app_projet', {id: projet.id}) }}">
-                        <h2>{{ projet.nom }}</h2>
-                    </a>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <div class="card-project-icons">
-                            <a href="{{ path('app_projet_edit', {id: projet.id}) }}"><i class="fa-solid fa-pen"></i></a>
-                            <a href="{{ path('app_projet_archive', {id: projet.id}) }}"><i class="fa-solid fa-trash"></i></a>
-                        </div>
-                    {% endif %}
-                </article>
-            {% endif %}
+        {# le projet s'affiche si l'user connecté est bien dans le projet ou s'il est chef de projet #}
+            {% if employe.email is same as app.user.employe.email or is_granted('ROLE_ADMIN') %}
+                {% set ok = 1 %}
+            {% endif %}            
         {% endfor %}
+        {% if ok %}
+            <article class="card-project">
+                <a href="{{ path('app_projet', {id: projet.id}) }}">
+                    <h2>{{ projet.nom }}</h2>
+                </a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <div class="card-project-icons">
+                        <a href="{{ path('app_projet_edit', {id: projet.id}) }}"><i class="fa-solid fa-pen"></i></a>
+                        <a href="{{ path('app_projet_archive', {id: projet.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                    </div>
+                {% endif %}
+            </article>
+        {% endif %}
     {% endfor %}
     {% if is_granted('ROLE_ADMIN') %}
         <article class="card-project">

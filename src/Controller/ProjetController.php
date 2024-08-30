@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Utils\AccessControl;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +13,6 @@ use App\Repository\StatutRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Projet;
 use App\Form\ProjetType;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ProjetController extends AbstractController
@@ -81,10 +82,10 @@ class ProjetController extends AbstractController
             return $this->redirectToRoute('app_projets');
         }
         // contrôle d'accès au projet
-        if (!$this->controleAccesProjet($projet->getEmployes(), $this->getUser()->getUserIdentifier())) {   
+        $accesControl = new AccessControl();
+        if (!$accesControl->controleAccesProjet($projet->getEmployes(), $this->getUser()->getUserIdentifier())) {   
             return $this->redirectToRoute('app_projets');
         }
-
         return $this->render('projet/projet.html.twig', [
             'projet' => $projet,
             'statuts' => $statuts,
@@ -120,7 +121,8 @@ class ProjetController extends AbstractController
             return $this->redirectToRoute('app_projets');
         }
         // contrôle d'accès au projet
-        if (!$this->controleAccesProjet($projet->getEmployes(), $this->getUser()->getUserIdentifier())) {   
+        $accesControl = new AccessControl();
+        if (!$accesControl->controleAccesProjet($projet->getEmployes(), $this->getUser()->getUserIdentifier())) {   
             return $this->redirectToRoute('app_projets');
         }
 
@@ -140,15 +142,5 @@ class ProjetController extends AbstractController
 
         ]);
     }
-    // contrôle d'accès au projet
-    // si l'utilisateur courant ne fait pas parti du projet : pas d'acces
-    private function controleAccesProjet ($employes, $currentUser) : int    {
-        $flag = 0;
-        foreach($employes as $employe) {
-            if ($employe->getEmail() === $currentUser) {
-                $flag = 1;
-            }
-        }
-    return $flag;
-    }
+
 }

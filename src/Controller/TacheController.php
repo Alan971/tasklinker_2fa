@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use App\Utils\AccessControl;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProjetRepository;
-use App\Repository\StatutRepository;
 use App\Repository\TacheRepository;
 use App\Form\TacheType;
 use App\Entity\Tache;
@@ -32,6 +33,11 @@ class TacheController extends AbstractController
         $projet = $this->projetRepository->find($id);
 
         if(!$projet || $projet->isArchive()) {
+            return $this->redirectToRoute('app_projets');
+        }
+        // contrôle d'accès a la tache
+        $accesControl = new AccessControl();
+        if (!$accesControl->controleAccesProjet($projet->getEmployes(), $this->getUser()->getUserIdentifier())) {   
             return $this->redirectToRoute('app_projets');
         }
 
@@ -60,7 +66,6 @@ class TacheController extends AbstractController
         if(!$tache || $tache->getProjet()->isArchive()) {
             return $this->redirectToRoute('app_projets');
         }
-
         $this->entityManager->remove($tache);
         $this->entityManager->flush();
         
@@ -75,6 +80,11 @@ class TacheController extends AbstractController
         $tache = $this->tacheRepository->find($id);
 
         if(!$tache || $tache->getProjet()->isArchive()) {
+            return $this->redirectToRoute('app_projets');
+        }
+        // contrôle d'accès a la tache
+        $accesControl = new AccessControl();
+        if (!$accesControl->controleAccesProjet($tache->getProjet()->getEmployes(), $this->getUser()->getUserIdentifier())) {   
             return $this->redirectToRoute('app_projets');
         }
 

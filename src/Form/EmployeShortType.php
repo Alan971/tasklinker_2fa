@@ -19,7 +19,6 @@ class EmployeShortType extends AbstractType
         $builder
             ->add('nom', TextType::class)
             ->add('prenom', TextType::class)
-            // ->add('email', EmailType::class)
         ;
     }
 
