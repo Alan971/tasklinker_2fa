@@ -5,15 +5,12 @@ namespace App\Utils;
 use App\Entity\Employe;
 
 class AccessControl{
-    public function controleAccesProjet ($employes, $currentUser) : int    {
-        $flag = 0;
-        $employe = new Employe();
+    public function controleAccesProjet ($employes, $currentUser) : bool    {
         foreach($employes as $employe) {
             if ($employe->getEmail() === $currentUser) {
-                $flag = 1;
+                return true;
             }
         }
-    return $flag;
+    return false;
     }
-
 }
