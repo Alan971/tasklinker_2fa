@@ -12,12 +12,8 @@ use App\Repository\ProjetRepository;
 use App\Repository\StatutRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Projet;
-use App\Entity\User;
-use App\Entity\Employe;
 use App\Form\ProjetType;
 use App\Repository\EmployeRepository;
-use SebastianBergmann\CodeCoverage\Report\Xml\Project;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use function PHPUnit\Framework\isEmpty;
@@ -45,7 +41,7 @@ class ProjetController extends AbstractController
         // controle d'accès aux projets :
         // si Chef de projet alors acces à tous
         if($this->isGranted('ROLE_ADMIN')) {
-            $projets = $this->projetRepository->findBy([
+            $projects = $this->projetRepository->findBy([
                 'archive' => false,
             ]);
         }
@@ -54,7 +50,6 @@ class ProjetController extends AbstractController
             $employe = $this->employeRepository->findByEmail($this->getUser()->getUserIdentifier());
             $projects = $employe->getProjets(); 
         }
-
         return $this->render('projet/liste.html.twig', [
             'projets' => $projects,
             'info' => '',
