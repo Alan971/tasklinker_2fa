@@ -47,6 +47,7 @@ security:
           - { path: ^/dispatch, roles: PUBLIC_ACCESS }
           - { path: ^/login, roles: PUBLIC_ACCESS }
           - { path: ^/register, roles: PUBLIC_ACCESS }
+          - { path: ^/2fa, roles: PUBLIC_ACCESS }
           - { path: ^/, roles: ROLE_USER }
 
 when@test:
