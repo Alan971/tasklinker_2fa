@@ -9,10 +9,11 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
 use Symfony\bridge\Doctrine\Types\UuidType;
+use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface
 {
     // modification pour que l'id ne soit pas incrémenté mais aléatoire
     // Voir le site https://symfony.com/doc/current/components/uid.html
@@ -47,6 +48,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Employe $employe = null;
+
+
+    // Données d'authentification 2FA
+    #[ORM\Column]
+    private ?string $authCode;
+    public function isEmailAuthEnabled(): bool    {
+        return true;
+    }
+    /**
+     * Return user email address.
+     */
+    public function getEmailAuthRecipient(): string    {
+        return $this->email;
+    }
+    /**
+     * Return the authentication code.
+     */
+    public function getEmailAuthCode(): ?string    {
+        if ($this->authCode === null) {
+            throw new \LogicException('The email authentication code was not set.');
+        }
+        return $this->authCode;
+    }
+    /**
+     * Set the authentication code.
+     */
+    public function setEmailAuthCode(string $authCode): void
+    {
+        $this->authCode = $authCode;
+    }
+
+
 
     public function getId(): ?Uuid
     {
