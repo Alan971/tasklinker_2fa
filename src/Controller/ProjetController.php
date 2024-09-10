@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Utils\AccessControl;
+use App\Services\AccessControl;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +25,7 @@ class ProjetController extends AbstractController
         private EmployeRepository $employeRepository,
         private StatutRepository $statutRepository,
         private EntityManagerInterface $entityManager,
+        private AccessControl $accessControl,
     )
     {
 
@@ -95,8 +96,7 @@ class ProjetController extends AbstractController
             return $this->redirectToRoute('app_projets');
         }
         // contrôle d'accès au projet par la barre de navigation
-        $accesControl = new AccessControl();
-        if (!$accesControl->controleAccesProjet($projet->getEmployes(), $this->getUser()->getUserIdentifier())) {   
+        if (!$this->accessControl->controleAccesProjet($projet->getEmployes(), $this->getUser()->getUserIdentifier())) {   
             return $this->redirectToRoute('app_projets');
         }
         return $this->render('projet/projet.html.twig', [
@@ -134,8 +134,7 @@ class ProjetController extends AbstractController
             return $this->redirectToRoute('app_projets');
         }
         // contrôle d'accès au projet
-        $accesControl = new AccessControl();
-        if (!$accesControl->controleAccesProjet($projet->getEmployes(), $this->getUser()->getUserIdentifier())) {   
+        if (!$this->accessControl->controleAccesProjet($projet->getEmployes(), $this->getUser()->getUserIdentifier())) {   
             return $this->redirectToRoute('app_projets');
         }
 

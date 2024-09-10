@@ -38,9 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     #[ORM\Column]
     #[Assert\NotBlank]
     #[Assert\NotCompromisedPassword()]
-    #[Assert\Regex('/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{8,32}$/')]
+    //#[Assert\Regex('/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{8,32}$/')]
     #[Assert\PasswordStrength([
-        'minScore' => 2, //PasswordStrength::STRENGTH_MEDIUM , ne trouve pas cette constante
+        'minScore' => Assert\PasswordStrength::STRENGTH_MEDIUM,
         'message' => 'Password must be stronger',
     ])]
     private ?string $password = null;

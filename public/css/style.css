@@ -83,8 +83,13 @@ nav {
 .block-p .p-ou {
     margin-top: 10px;
 }
-.field-dispatch {
-    width: 150px;
+.fa-button {
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+}
+.fa-button:hover{
+    background-color: #1C5B50;
 }
 .field-dispatch:hover {  
    background-color: #1C5B50;
@@ -95,6 +100,7 @@ nav {
     text-align: left;
 }
 .field-dispatch {
+    width: 150px;
     justify-content: center;
     align-items: center;
 }
@@ -306,7 +312,7 @@ div#projects-container {
     height: 54px;
     display: flex;
     align-items: center;
-    color: #4D8077;
+    color: #FFFFFF;
     font-family: Manrope;
     font-size: 14px;
     font-weight: 700;
