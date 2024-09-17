@@ -52,7 +52,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
 
     // Données d'authentification 2FA
     #[ORM\Column]
-    private ?string $authCode;
+    private ?string $authCode = "";
+
     public function isEmailAuthEnabled(): bool    {
         return true;
     }
